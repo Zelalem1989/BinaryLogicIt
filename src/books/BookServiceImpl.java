@@ -2,6 +2,7 @@ package books;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BookServiceImpl implements BookService{
@@ -11,25 +12,30 @@ public class BookServiceImpl implements BookService{
     @Override
     public void addBook(Scanner scan) {
 
-        System.out.println("Please Enter BOOK ISBN :");
-        int ISBN = scan.nextInt();
+        try {
+            System.out.println("Please Enter BOOK ISBN :");
+            int ISBN = scan.nextInt();
 
-        // consume the line character left in the buffer reading the int value
-        scan.nextLine();
+            // consume the line character left in the buffer reading the int value
+            scan.nextLine();
 
-        System.out.println("Please Enter BOOK Name :");
-        String bookName = scan.nextLine();
+            System.out.println("Please Enter BOOK Name :");
+            String bookName = scan.nextLine();
 
-        System.out.println("Please Enter BOOK genre :");
-        String bookGenre = scan.nextLine();
+            System.out.println("Please Enter BOOK genre :");
+            String bookGenre = scan.nextLine();
 
-        System.out.println("Please Enter BOOK price :");
-        double bookPrice = scan.nextDouble();
+            System.out.println("Please Enter BOOK price :");
+            double bookPrice = scan.nextDouble();
 
-        Books B = new Books(ISBN, bookName, bookGenre, bookPrice);
-        arrayList.add(B);
+            Books B = new Books(ISBN, bookName, bookGenre, bookPrice);
+            arrayList.add(B);
+            System.out.println("Book added successfully!!!");
+        }catch (InputMismatchException e){
 
-        System.out.println("Student added successfully!!!");
+            System.out.println(e.getMessage());
+
+        }
     }
 
     @Override
@@ -39,32 +45,36 @@ public class BookServiceImpl implements BookService{
             System.out.println("No Books in the Stock");
             return;
         } else {
-            System.out.println("Enter the ISBN of the Book to remove from stock.");
-            int ISBN = scan.nextInt();
+            try {
+                System.out.println("Enter the ISBN of the Book to remove from stock.");
+                int ISBN = scan.nextInt();
 
-            // iterate the arraylist
-            // find index.Isbn == isbn
-            // remove from arraylist
-            // else sout not in arraylist
+                // iterate the arraylist
+                // find index.Isbn == isbn
+                // remove from arraylist
+                // else sout not in arraylist
 
-            for (int i = 0; i < arrayList.size(); i++) {
-                if(arrayList.get(i).getISBN() == ISBN){
-                    arrayList.remove(i);
-                    System.out.println("Book removed Successfully ");
-                    return;
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).getISBN() == ISBN) {
+                        arrayList.remove(i);
+                        System.out.println("Book removed Successfully ");
+                        return;
+                    }
                 }
+                System.out.println("Book Is Not In Stock ");
+            } catch (InputMismatchException e) {
+                System.out.println("Error: " + e.getMessage());
             }
-            System.out.println("Book Is Not In Stock ");
         }
     }
 
     @Override
     public void ListBooks() {
 
-        // print arraylist
+        // print arraylist (not printing ?)
         System.out.println( Arrays.toString(arrayList.toArray()));
 
-    }
+        }
 
     @Override
     public void updateBook(Scanner scan) {
@@ -78,29 +88,32 @@ public class BookServiceImpl implements BookService{
 
             for (int i = 0; i < arrayList.size(); i++) {
                 if(arrayList.get(i).getISBN() == ISBN) {
+                    try {
+                        System.out.println("Please Enter new BOOK ISBN :");
+                        int newISBN = scan.nextInt();
 
-                    System.out.println("Please Enter new BOOK ISBN :");
-                    int newISBN = scan.nextInt();
+                        // consume the line character left in the buffer reading the int value
+                        scan.nextLine();
 
-                    // consume the line character left in the buffer reading the int value
-                    scan.nextLine();
+                        System.out.println("Please Enter new BOOK Name :");
+                        String newBookName = scan.nextLine();
 
-                    System.out.println("Please Enter new BOOK Name :");
-                    String newBookName = scan.nextLine();
+                        System.out.println("Please Enter new BOOK genre :");
+                        String newBookGenre = scan.nextLine();
 
-                    System.out.println("Please Enter new BOOK genre :");
-                    String newBookGenre = scan.nextLine();
+                        System.out.println("Please Enter new BOOK price :");
+                        double newBookPrice = scan.nextDouble();
 
-                    System.out.println("Please Enter new BOOK price :");
-                    double newBookPrice = scan.nextDouble();
+                        arrayList.get(i).setISBN(newISBN);
+                        arrayList.get(i).setBookName(newBookName);
+                        arrayList.get(i).setBookGenre(newBookGenre);
+                        arrayList.get(i).setBookPrice(newBookPrice);
 
-                    arrayList.get(i).setISBN(newISBN);
-                    arrayList.get(i).setBookName(newBookName);
-                    arrayList.get(i).setBookGenre(newBookGenre);
-                    arrayList.get(i).setBookPrice(newBookPrice);
-
-                    System.out.println("Book Updated Successfully ");
-                    return;
+                        System.out.println("Book Updated Successfully ");
+                        return;
+                    }catch (InputMismatchException e){
+                        System.out.println(e.getMessage());
+                    }
                 }
                 System.out.println("Book Is Not In Stock(Invalid ISBN) ");
             }
