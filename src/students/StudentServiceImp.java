@@ -2,6 +2,7 @@ package students;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentServiceImp implements StudentService {
@@ -19,29 +20,32 @@ public class StudentServiceImp implements StudentService {
             System.out.println("Sorry, class is full");
             return;
         } else
+        try {
+            System.out.println("Please Enter Student ID :");
+            int studentId = scan.nextInt();
 
-        System.out.println("Please Enter Student ID :");
-        int studentId = scan.nextInt();
+            System.out.println("Please Enter Student Name :");
+            String name = scan.nextLine();
 
-        System.out.println("Please Enter Student Name :");
-        String name = scan.nextLine();
+            // consume the line character left in the buffer reading the int value
+            scan.nextLine();
 
-        // consume the line character left in the buffer reading the int value
-        scan.nextLine();
+            System.out.println("Please Enter Student Email :");
+            String email = scan.nextLine();
 
-        System.out.println("Please Enter Student Email :");
-        String email = scan.nextLine();
+            System.out.println("Please Enter Student Grade :");
+            double grade = scan.nextDouble();
 
-        System.out.println("Please Enter Student Grade :");
-        double grade = scan.nextDouble();
+            Student student = new Student(studentId, name, email, grade);
 
-        Student student = new Student(studentId, name, email, grade);
+            // incriminate for the second student(index)
+            studentList[numStudent++] = student;
 
-        // incriminate for the second student(index)
-        studentList[numStudent++] = student;
-
-        System.out.println("Student added successfully!!!");
-
+            System.out.println("Student added successfully!!!");
+        }catch (Exception e){
+            // returning null ??
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     @Override
@@ -54,6 +58,7 @@ public class StudentServiceImp implements StudentService {
         // class approch
         if (numStudent == 0) {
             System.out.println("No Student in the array");
+            return;
         }
         System.out.println("Enter the index of the Student to remove (0 to " + (numStudent -1) + ")");
         int index = scan.nextInt();
